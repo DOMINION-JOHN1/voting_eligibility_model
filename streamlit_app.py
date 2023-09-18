@@ -8,7 +8,7 @@ import io
 from keras.models import load_model
 model = load_model('best_model.h5')  # Replace 'your_model.h5' with the actual filename of your model
 
-st.title("Image Classifier")
+st.title("Voter's Eligibilty Checker")
 
 uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "png", "jpeg"])
 img_data = None
