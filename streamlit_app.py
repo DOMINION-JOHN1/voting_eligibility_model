@@ -1,11 +1,11 @@
 import streamlit as st
 import numpy as np
-from keras.preprocessing import image
+from tensorflow.keras.preprocessing import image
 import base64
 import io
 
 # Load the Keras model
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 model = load_model('best_model.h5')  # Replace 'your_model.h5' with the actual filename of your model
 
 st.title("Voter's Eligibility Checker")
@@ -26,22 +26,23 @@ if uploaded_file is not None:
 
     # Preprocess the image
     img_array = image.img_to_array(img_rgb)
-    img_array_float32 = img_array.astype('float32')
+    img_array_float32 = img_array.astype('float64')
     img_array_float32 /= 255
-    img_array = np.expand_dims(img_array_float32, axis=0)
+    img_array=np.expand_dims(img_array_float32, axis=0)
+
 
     # Make predictions using the Keras model
     predictions = model.predict(img_array)
-    predicted_class = np.argmax(predictions, axis=1)
+    predicted_class = np.argmax(predictions,axis=1)
 
     class_dict = {
-        0: 'Non Eligible',
-        1: 'Eligible'
+        0: 'Eligible',
+        1: 'Non Eligible'
        }
 
     result = class_dict[predicted_class[0]]
 
-    st.write(f"Prediction: {result}")
+    st.write(f"This Citizen is: {result}")
 
     # Display the uploaded image
     st.image(img, caption='Uploaded Image', use_column_width=True)
