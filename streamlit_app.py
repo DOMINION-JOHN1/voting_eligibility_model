@@ -34,7 +34,8 @@ if uploaded_file is not None:
 
     # Make predictions using the Keras model
     predictions = model.predict(img_array)
-    predicted_class = 1 if predictions[0][0] >= 0.70 else 0
+    predicted_class = 1 if predictions[0][0] >= 0.73 else 0
+
 
     if predicted_class == 1:
         result = "Eligible"
