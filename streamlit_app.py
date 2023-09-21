@@ -6,7 +6,6 @@ import io
 
 # Load the Keras model
 from tensorflow.keras.models import load_model
-model = load_model('best_model.h5')  # Replace 'your_model.h5' with the actual filename of your model
 
 st.title("Voter's Eligibility Checker")
 
@@ -21,26 +20,26 @@ if uploaded_file is not None:
 
     # Convert PIL Image to data URL
     img_buffer = io.BytesIO()
-    img.save(img_buffer, format="PNG")
+    img_rgb.save(img_buffer, format="PNG")
     img_data = base64.b64encode(img_buffer.getvalue()).decode()
 
     # Preprocess the image
     img_array = image.img_to_array(img_rgb)
-    img_array_float32 = img_array.astype('float64')
+    img_array_float32 = img_array.astype('float32')
     img_array_float32 /= 255
-    img_array=np.expand_dims(img_array_float32, axis=0)
+    img_array = np.expand_dims(img_array_float32, axis=0)
 
+    # Load the pre-trained Keras model
+    model = load_model('best_model.h5')  # Replace 'best_model.h5' with your actual model filename
 
     # Make predictions using the Keras model
     predictions = model.predict(img_array)
-    predicted_class = np.argmax(predictions,axis=1)
+    predicted_class = 1 if predictions[0][0] >= 0.70 else 0
 
-    class_dict = {
-        0: 'Eligible',
-        1: 'Non Eligible'
-       }
-
-    result = class_dict[predicted_class[0]]
+    if predicted_class == 1:
+        result = "Eligible"
+    else:
+        result = "Non Eligible"
 
     st.write(f"This Citizen is: {result}")
 
