@@ -8,7 +8,7 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 
 st.title("Voter's Eligibility Checker")
-image = Image.open("bank.jpg")
+image = Image.open("ELECTION AI.jpg")
 st.image(image, use_column_width=True)
 
 uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "png", "jpeg"])
