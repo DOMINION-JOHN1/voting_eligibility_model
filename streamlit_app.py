@@ -3,11 +3,13 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 import base64
 import io
-
+from PIL import Image
 # Load the Keras model
 from tensorflow.keras.models import load_model
 
 st.title("Voter's Eligibility Checker")
+image = Image.open("bank.jpg")
+st.image(image, use_column_width=True)
 
 uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "png", "jpeg"])
 img_data = None
