@@ -17,7 +17,8 @@ img_data = None
 if uploaded_file is not None:
     # Use in-memory image
     image_stream = io.BytesIO(uploaded_file.read())
-    img = Image.open(image_stream, target_size=(128, 128))
+    img = Image.open(image_stream)
+    img = img.resize((128, 128))
     img_rgb = img.convert("RGB")
 
     # Convert PIL Image to data URL
