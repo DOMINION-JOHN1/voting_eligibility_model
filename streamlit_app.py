@@ -8,7 +8,7 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 
 st.title("Voter's Eligibility Checker")
-image = Image.open("ELECTION AI.jpg")  # Updated image filename
+image = Image.open("ELECTION AI.jpg")
 st.image(image, use_column_width=True)
 
 uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "png", "jpeg"])
@@ -17,12 +17,16 @@ img_data = None
 if uploaded_file is not None:
     # Use in-memory image
     image_stream = io.BytesIO(uploaded_file.read())
-    img = Image.open(image_stream)  # Updated to use PIL's Image.open
-    img = img.convert("RGB")
+    img = image.load_img(image_stream, target_size=(128, 128))
+    img_rgb = img.convert("RGB")
+
+    # Convert PIL Image to data URL
+    img_buffer = io.BytesIO()
+    img_rgb.save(img_buffer, format="PNG")
+    img_data = base64.b64encode(img_buffer.getvalue()).decode()
 
     # Preprocess the image
-    img = img.resize((128, 128))  # Resize to the target size
-    img_array = np.array(img)  # Convert PIL Image to NumPy array
+    img_array = image.img_to_array(img_rgb)
     img_array_float32 = img_array.astype('float32')
     img_array_float32 /= 255
     img_array = np.expand_dims(img_array_float32, axis=0)
@@ -33,6 +37,7 @@ if uploaded_file is not None:
     # Make predictions using the Keras model
     predictions = model.predict(img_array)
     predicted_class = 1 if predictions[0][0] >= 0.73 else 0
+
 
     if predicted_class == 1:
         result = "Eligible"
