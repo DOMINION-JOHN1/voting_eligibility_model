@@ -1,4 +1,4 @@
-mport streamlit as st
+import streamlit as st
 import numpy as np
 from tensorflow.keras.preprocessing import image
 import base64
