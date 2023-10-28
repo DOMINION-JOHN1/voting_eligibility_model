@@ -27,7 +27,7 @@ if uploaded_file is not None:
     img_data = base64.b64encode(img_buffer.getvalue()).decode()
 
     # Preprocess the image
-    img_array = image.img_to_array(img_rgb)
+    img_array = np.array(img_rgb)
     img_array_float32 = img_array.astype('float32')
     img_array_float32 /= 255
     img_array = np.expand_dims(img_array_float32, axis=0)
