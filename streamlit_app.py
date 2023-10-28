@@ -17,7 +17,8 @@ img_data = None
 if uploaded_file is not None:
     # Use in-memory image
     image_stream = io.BytesIO(uploaded_file.read())
-    img = image.load_img(image_stream, target_size=(128, 128))
+    img = Image.open(image_stream)  # Use PIL's Image.open
+    img = img.resize((128, 128))
     img_rgb = img.convert("RGB")
 
     # Convert PIL Image to data URL
@@ -36,10 +37,7 @@ if uploaded_file is not None:
 
     # Make predictions using the Keras model
     predictions = model.predict(img_array)
-    predicted_class = 1 if predictions[0][0] >= 0.73 else 0
-
-
-    if predicted_class == 1:
+    predicted_c    if predicted_class == 1:
         result = "Eligible"
     else:
         result = "Non Eligible"
